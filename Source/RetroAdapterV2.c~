@@ -52,7 +52,7 @@ const uchar hat_lut[] PROGMEM  = { -1, 0, 4, -1, 6, 7, 5, -1, 2, 1, 3, -1, -1, -
 
 /* ------------------------------------------------------------------------- */
 
-void ReadDB9_P1(report_t *reportBuffer)
+void ReadDB9_P2(report_t *reportBuffer)
 {
 	DDRD	&= 0b10000110;				// All inputs except Select, don't touch USB D+/-
 	DDRD	|= 0b10000000;				// Select as output
@@ -87,7 +87,7 @@ void ReadDB9_P1(report_t *reportBuffer)
 	PORTD	|= (1<<7);					// Select high for Megadrive between polls
 }
 
-void ReadDB9_P2(report_t *reportBuffer)
+void ReadDB9_P1(report_t *reportBuffer)
 {
 
 
@@ -158,13 +158,13 @@ void ReadController(uchar id)
 	reportBuffer.hat = -1;
 	reportBuffer.reportid = id;
 
-	if ( id == 1 ) {	
+	if ( id == 1 ) {
+		hidMode = HIDM_1P;	
 		ReadDB9_P1(&reportBuffer);
 	} else if (id == 2){
-		//hidMode = HIDM_2P;
+		hidMode = HIDM_2P;
 		ReadDB9_P2(&reportBuffer);
 	}
-	hidMode = HIDM_2P;
 }
 
 /* ------------------------------------------------------------------------- */
